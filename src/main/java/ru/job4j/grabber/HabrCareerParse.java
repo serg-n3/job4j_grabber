@@ -20,6 +20,8 @@ public class HabrCareerParse implements Parse {
 
     private final DateTimeParser dateTimeParser;
 
+    private static final int PAGECOUNT = 5;
+
     public HabrCareerParse(DateTimeParser dateTimeParser) {
         this.dateTimeParser = dateTimeParser;
     }
@@ -33,7 +35,7 @@ public class HabrCareerParse implements Parse {
 
     public List<Post> createPost() throws IOException {
         List<Post> postList = new ArrayList<>();
-        for (int i = 1; i < 6; i++) {
+        for (int i = 1; i < PAGECOUNT; i++) {
             postList.addAll(list(String.format(PAGE_LINK + "?page=%s", i)));
         }
         return postList;
