@@ -20,24 +20,25 @@ public class PsqlStore implements Store {
         }
         try {
             Class.forName(cfg.getProperty("driver"));
-        } catch (Exception e) {
+        } catch (Exception  e) {
             throw new IllegalStateException(e);
         }
         try {
             cnn = DriverManager.getConnection(
                     cfg.getProperty("url"),
-                    cfg.getProperty("username"),
+                    cfg.getProperty("login"),
                     cfg.getProperty("password")
             );
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
     @Override
     public void save(Post post) {
         try (PreparedStatement statement =
-                     cnn.prepareStatement("INSERT INTO post (name, text, link, created) VALUES (?, ?, ?, ?)",
+                     cnn.prepareStatement("INSERT INTO post (name, text, link, created) VALUES (?, ?, ?, ?) "
+                                    + "ON CONFLICT (link) DO NOTHING",
                      Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, post.getTitle());
             statement.setString(2, post.getDescription());
@@ -49,7 +50,7 @@ public class PsqlStore implements Store {
                     post.setId(generatedKey.getInt(1));
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -70,7 +71,7 @@ public class PsqlStore implements Store {
                     postList.add(post);
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return postList;
@@ -93,7 +94,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return post;
     }
