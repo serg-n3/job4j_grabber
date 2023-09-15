@@ -61,7 +61,6 @@ public class Grabber implements Grab {
     }
 
     public void web(Store store, String port) {
-        //var cfg = new Properties();
         new Thread(() -> {
             try (ServerSocket server = new ServerSocket(Integer.parseInt(port))) {
                 while (!server.isClosed()) {
