@@ -5,13 +5,29 @@ import java.util.Objects;
 
 public class Post {
 
+    private int id;
+
     private String text;
 
     private List<Comment> comments;
 
+    public Post(int id, String text, List<Comment> comments) {
+        this.id = id;
+        this.text = text;
+        this.comments = comments;
+    }
+
     public Post(String text, List<Comment> comments) {
         this.text = text;
         this.comments = comments;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getText() {
@@ -39,11 +55,11 @@ public class Post {
             return false;
         }
         Post post = (Post) o;
-        return Objects.equals(text, post.text) && Objects.equals(comments, post.comments);
+        return Objects.equals(id, post.id) && Objects.equals(text, post.text) && Objects.equals(comments, post.comments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(text, comments);
+        return Objects.hash(id, text, comments);
     }
 }
