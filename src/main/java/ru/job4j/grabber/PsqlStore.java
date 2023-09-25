@@ -40,8 +40,8 @@ public class PsqlStore implements Store {
                                     + "ON CONFLICT (link) DO NOTHING",
                      Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, post.getTitle());
-            statement.setString(2, post.getDescription());
-            statement.setString(3, post.getLink());
+            statement.setString(2, post.getLink());
+            statement.setString(3, post.getDescription());
             statement.setTimestamp(4, Timestamp.valueOf(post.getCreated()));
             statement.execute();
             try (ResultSet generatedKey = statement.getGeneratedKeys()) {
@@ -64,8 +64,8 @@ public class PsqlStore implements Store {
                 while (resultSet.next()) {
                     Post post = new Post(resultSet.getInt(1),
                             resultSet.getString("name"),
-                            resultSet.getString("text"),
                             resultSet.getString("link"),
+                            resultSet.getString("text"),
                             resultSet.getTimestamp("created").toLocalDateTime());
                     postList.add(post);
                 }
