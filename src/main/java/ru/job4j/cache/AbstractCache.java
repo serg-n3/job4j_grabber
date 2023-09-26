@@ -9,7 +9,7 @@ public abstract class AbstractCache<K, V> {
     private final Map<K, SoftReference<V>> cache = new HashMap<>();
 
     public final void put(K key, V value) {
-        if (!cache.containsKey(key)) {
+        if (!cache.containsKey(key) || cache.get(key).get() == null) {
             cache.put(key, new SoftReference<>(value));
         }
     }
